@@ -1,0 +1,41 @@
+{
+  "name": "easyrlm",
+  "version": "1.0.0",
+  "description": "Recursive Language Models for Claude Code - Persistent context management with Kakaroto Fields",
+  "type": "module",
+  "main": "lib/index.js",
+  "bin": {
+    "easyrlm": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "node bin/cli.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "rlm",
+    "recursive-language-models",
+    "ai",
+    "context-management",
+    "kakaroto"
+  ],
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "bin/",
+    "lib/",
+    "templates/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/easyrlm"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(tree:*)",
+      "Bash(dir \"C:\\\\Users\\\\caio\\\\.claude\" /s)",
+      "Bash(ls:*)",
+      "Bash(du -sh:*)",
+      "Bash(xcopy:*)",
+      "Bash(robocopy:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(npm install)",
+      "Bash(node:*)",
+      "Bash(del \"C:\\\\Claude\\\\easyRLM-test\\\\.claude\\\\agents\\\\code-reviewer.md\")",
+      "Bash(dir:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
