@@ -1,53 +1,55 @@
 #!/bin/bash
-# Auto-index project context at install time
+# Auto-index project context and build CLAUDE.md
 # Idempotent: safe to run multiple times
 
 CONTEXT_DIR=".claude/context"
 PROJECT_FILE="$CONTEXT_DIR/project.md"
+CLAUDE_MD=".claude/CLAUDE.md"
 
-# Skip if project.md already has real content (not template)
-if [ -f "$PROJECT_FILE" ]; then
-  # Check for common placeholder patterns
-  if ! grep -qE "\{(Nome do Projeto|Project Name|name|description)\}" "$PROJECT_FILE" 2>/dev/null; then
-    echo "Context already initialized - skipping"
-    exit 0
+# Check if project.md needs initialization
+NEEDS_PROJECT_INIT=false
+if [ ! -f "$PROJECT_FILE" ]; then
+  NEEDS_PROJECT_INIT=true
+elif grep -qE "\{(Nome do Projeto|Project Name|name|description)\}" "$PROJECT_FILE" 2>/dev/null; then
+  NEEDS_PROJECT_INIT=true
+fi
+
+# Initialize project.md if needed
+if [ "$NEEDS_PROJECT_INIT" = true ]; then
+  # Detect project type and extract info
+  PROJECT_TYPE="unknown"
+  PROJECT_NAME=""
+  PROJECT_DESC=""
+
+  if [ -f "package.json" ]; then
+    PROJECT_TYPE="node"
+    PROJECT_NAME=$(grep -o '"name"[[:space:]]*:[[:space:]]*"[^"]*"' package.json | head -1 | sed 's/.*: *"\([^"]*\)"/\1/')
+    PROJECT_DESC=$(grep -o '"description"[[:space:]]*:[[:space:]]*"[^"]*"' package.json | head -1 | sed 's/.*: *"\([^"]*\)"/\1/')
+  elif [ -f "pyproject.toml" ]; then
+    PROJECT_TYPE="python"
+    PROJECT_NAME=$(grep -o 'name = "[^"]*"' pyproject.toml | head -1 | sed 's/name = "\([^"]*\)"/\1/')
+  elif [ -f "go.mod" ]; then
+    PROJECT_TYPE="go"
+    PROJECT_NAME=$(head -1 go.mod | sed 's/module //')
+  elif [ -f "Cargo.toml" ]; then
+    PROJECT_TYPE="rust"
+    PROJECT_NAME=$(grep -o 'name = "[^"]*"' Cargo.toml | head -1 | sed 's/name = "\([^"]*\)"/\1/')
   fi
-fi
 
-# Detect project type and extract info
-PROJECT_TYPE="unknown"
-PROJECT_NAME=""
-PROJECT_DESC=""
+  # Fallback to folder name
+  [ -z "$PROJECT_NAME" ] && PROJECT_NAME=$(basename "$PWD")
 
-if [ -f "package.json" ]; then
-  PROJECT_TYPE="node"
-  PROJECT_NAME=$(grep -o '"name"[[:space:]]*:[[:space:]]*"[^"]*"' package.json | head -1 | sed 's/.*: *"\([^"]*\)"/\1/')
-  PROJECT_DESC=$(grep -o '"description"[[:space:]]*:[[:space:]]*"[^"]*"' package.json | head -1 | sed 's/.*: *"\([^"]*\)"/\1/')
-elif [ -f "pyproject.toml" ]; then
-  PROJECT_TYPE="python"
-  PROJECT_NAME=$(grep -o 'name = "[^"]*"' pyproject.toml | head -1 | sed 's/name = "\([^"]*\)"/\1/')
-elif [ -f "go.mod" ]; then
-  PROJECT_TYPE="go"
-  PROJECT_NAME=$(head -1 go.mod | sed 's/module //')
-elif [ -f "Cargo.toml" ]; then
-  PROJECT_TYPE="rust"
-  PROJECT_NAME=$(grep -o 'name = "[^"]*"' Cargo.toml | head -1 | sed 's/name = "\([^"]*\)"/\1/')
-fi
+  # Count code files
+  CODE_FILES=$(find . \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.py" -o -name "*.go" -o -name "*.rs" \) 2>/dev/null | grep -v node_modules | grep -v venv | grep -v .next | wc -l | tr -d ' ')
 
-# Fallback to folder name
-[ -z "$PROJECT_NAME" ] && PROJECT_NAME=$(basename "$PWD")
+  # Get folder structure (top 2 levels)
+  FOLDERS=$(find . -type d -maxdepth 2 -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/.next/*" -not -path "*/venv/*" -not -path "*/__pycache__/*" 2>/dev/null | sort | head -20 | sed 's|^\./||' | grep -v "^\.$" | sed 's/^/  /')
 
-# Count code files
-CODE_FILES=$(find . \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.py" -o -name "*.go" -o -name "*.rs" \) 2>/dev/null | grep -v node_modules | grep -v venv | grep -v .next | wc -l | tr -d ' ')
+  # Ensure context dir exists
+  mkdir -p "$CONTEXT_DIR"
 
-# Get folder structure (top 2 levels)
-FOLDERS=$(find . -type d -maxdepth 2 -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/.next/*" -not -path "*/venv/*" -not -path "*/__pycache__/*" 2>/dev/null | sort | head -20 | sed 's|^\./||' | grep -v "^\.$" | sed 's/^/  /')
-
-# Ensure context dir exists
-mkdir -p "$CONTEXT_DIR"
-
-# Generate project.md with real data
-cat > "$PROJECT_FILE" << EOF
+  # Generate project.md with real data
+  cat > "$PROJECT_FILE" << EOF
 # $PROJECT_NAME
 
 > **TIER 1 - CORE**: This file is loaded at the start of every session.
@@ -88,4 +90,129 @@ $FOLDERS
 *For full details, run context-indexer agent in Claude.*
 EOF
 
-echo "Context initialized: $PROJECT_NAME ($PROJECT_TYPE, $CODE_FILES files)"
+  echo "Context initialized: $PROJECT_NAME ($PROJECT_TYPE, $CODE_FILES files)"
+fi
+
+# ============================================
+# BUILD CLAUDE.MD WITH ALL CONTEXT EMBEDDED
+# ============================================
+
+# Read context files (use empty string if file doesn't exist or has placeholders)
+read_context_file() {
+  local file="$1"
+  if [ -f "$file" ]; then
+    # Skip if file has placeholders
+    if grep -qE "\{(Nome do Projeto|Project Name|name|description|TIMESTAMP|DATE)\}" "$file" 2>/dev/null; then
+      echo ""
+    else
+      cat "$file"
+    fi
+  else
+    echo ""
+  fi
+}
+
+PROJECT_CONTENT=$(read_context_file "$CONTEXT_DIR/project.md")
+ARCHITECTURE_CONTENT=$(read_context_file "$CONTEXT_DIR/architecture.md")
+KNOWLEDGE_CONTENT=$(read_context_file "$CONTEXT_DIR/knowledge.md")
+PATTERNS_CONTENT=$(read_context_file "$CONTEXT_DIR/patterns.md")
+CURRENT_CONTENT=$(read_context_file "$CONTEXT_DIR/current.md")
+
+# Generate complete CLAUDE.md with all context inline
+cat > "$CLAUDE_MD" << 'HEADER'
+# Claude Code - Global Rules
+
+## Autonomy
+DO, don't ask. SEARCH, don't request context.
+
+## Workflows
+| Trigger | Action |
+|---------|--------|
+| create/add/implement feature | `/feature` |
+| bug/error/problem | `/debug` |
+
+## Code
+- Functions < 50 lines, max 2 nesting levels
+- TypeScript strict, ES modules, async/await
+- Zod for external inputs
+- FORBIDDEN: `any`, generic try/catch, callbacks
+
+## Tests (BLOCKING)
+Code without test = PR rejected.
+Exceptions: config files, .d.ts, pure UI without logic.
+
+## Self-Evaluation
+After /feature and /debug: execute evaluation phase (07/06-evaluate).
+Dual-loop sequential thinking: diagnosis → synthesis → propose improvements to user.
+
+## Workflow Recovery
+
+**Post-compaction:** IF hook output shows `WORKFLOW RECOVERY REQUIRED`:
+
+1. `Read .claude/workflow-state.json`
+2. `Read ~/.claude/commands/feature/{currentPhase}.md`
+3. `Read` non-null artifacts: interview, analysis, contract, spec, plan
+4. Resume from `lastStep` using `resumeHint`
+
+**AUTOMATIC** - don't ask user, just resume.
+
+---
+---
+
+# PROJECT CONTEXT (Auto-Generated by easyRLM)
+
+HEADER
+
+# Append context sections
+if [ -n "$PROJECT_CONTENT" ]; then
+  echo "## Project Overview" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "$PROJECT_CONTENT" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "---" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+fi
+
+if [ -n "$ARCHITECTURE_CONTENT" ]; then
+  echo "## Architecture" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "$ARCHITECTURE_CONTENT" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "---" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+fi
+
+if [ -n "$KNOWLEDGE_CONTENT" ]; then
+  echo "## Knowledge Base" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "$KNOWLEDGE_CONTENT" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "---" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+fi
+
+if [ -n "$PATTERNS_CONTENT" ]; then
+  echo "## Code Patterns" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "$PATTERNS_CONTENT" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "---" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+fi
+
+if [ -n "$CURRENT_CONTENT" ]; then
+  echo "## Current State" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+  echo "$CURRENT_CONTENT" >> "$CLAUDE_MD"
+  echo "" >> "$CLAUDE_MD"
+fi
+
+# Add footer
+cat >> "$CLAUDE_MD" << 'FOOTER'
+
+---
+
+*Context auto-generated by easyRLM. Edit .claude/context/*.md files and run `npx easyrlm` to rebuild.*
+FOOTER
+
+echo "CLAUDE.md rebuilt with embedded context"

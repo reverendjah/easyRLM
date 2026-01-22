@@ -8,7 +8,7 @@ import { update } from '../lib/updater.js';
 import { fix } from '../lib/fixer.js';
 import { validate } from '../lib/validator.js';
 
-const VERSION = '1.5.0';
+const VERSION = '1.7.1';
 
 // Initialize context if placeholders detected (idempotent)
 async function initContext(cwd) {
@@ -19,10 +19,13 @@ async function initContext(cwd) {
       stdio: 'pipe',
       encoding: 'utf-8'
     });
-    if (result.includes('initialized:')) {
-      console.log(chalk.green(`  ✓ ${result.trim()}`));
+    // Show output for both project init and CLAUDE.md rebuild
+    const lines = result.trim().split('\n').filter(l => l.length > 0);
+    for (const line of lines) {
+      if (line.includes('initialized:') || line.includes('rebuilt')) {
+        console.log(chalk.green(`  ✓ ${line}`));
+      }
     }
-    // "skipping" means already initialized - that's fine
   } catch (e) {
     // Script not found or failed - not critical
   }

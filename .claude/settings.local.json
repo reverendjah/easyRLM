@@ -63,7 +63,10 @@
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(git commit:*)",
       "Bash(npx easyrlm@1.4.0)",
-      "Bash(npx easyrlm@1.4.1)"
+      "Bash(npx easyrlm@1.4.1)",
+      "Bash(npx easyrlm@1.5.0:*)",
+      "Bash(npx easyrlm@1.7.0)",
+      "Bash(bash scripts/init-context.sh:*)"
     ]
   }
 }
