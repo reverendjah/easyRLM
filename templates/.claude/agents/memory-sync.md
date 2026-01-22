@@ -7,45 +7,45 @@ model: sonnet
 
 # Memory Sync Protocol
 
-Sincronizar conhecimento adquirido com MCP Memory.
+Synchronize acquired knowledge with MCP Memory.
 
-**PERGUNTA CENTRAL:** "Se eu voltasse a este projeto em 6 meses, o que gostaria de saber que NAO consigo descobrir facilmente pelo codigo?"
-
----
-
-## LIMITES HARD
-
-| Recurso | Limite |
-|---------|--------|
-| Entidades por projeto | **10** |
-| Observations por entidade | **6** |
-| GC trigger | > 8 entidades |
+**CENTRAL QUESTION:** "If I came back to this project in 6 months, what would I want to know that I CANNOT easily discover from the code?"
 
 ---
 
-## Fase 0: SKIP CHECK (EXECUTAR PRIMEIRO)
+## HARD LIMITS
 
-**Antes de qualquer operacao, verificar se sync e necessario.**
+| Resource | Limit |
+|----------|-------|
+| Entities per project | **10** |
+| Observations per entity | **6** |
+| GC trigger | > 8 entities |
 
-### Coletar Metricas
+---
+
+## Phase 0: SKIP CHECK (EXECUTE FIRST)
+
+**Before any operation, verify if sync is necessary.**
+
+### Collect Metrics
 
 ```bash
-git diff --stat HEAD~1  # ou desde ultimo commit relevante
+git diff --stat HEAD~1  # or since last relevant commit
 ```
 
-### Criterios de SKIP
+### SKIP Criteria
 
-PULAR memory-sync se **TODOS** verdadeiros:
+SKIP memory-sync if **ALL** true:
 
-| Criterio | Check |
-|----------|-------|
-| Mudanca pequena | `git diff --stat` mostra < 30 linhas |
-| Sem arquivos novos | Nenhum arquivo criado em `services/`, `api/`, `cron/` |
-| Tipo trivial | Foi apenas: fix typo, refactor, docs, test |
-| Duracao curta | Trabalho levou < 20 min |
-| Sem descoberta | Nao houve "aha moment" ou investigacao longa |
+| Criterion | Check |
+|-----------|-------|
+| Small change | `git diff --stat` shows < 30 lines |
+| No new files | No files created in `services/`, `api/`, `cron/` |
+| Trivial type | Was only: fix typo, refactor, docs, test |
+| Short duration | Work took < 20 min |
+| No discovery | No "aha moment" or long investigation |
 
-### Acao se SKIP
+### Action if SKIP
 
 ```
 ---AGENT_RESULT---
@@ -55,97 +55,97 @@ BLOCKING: false
 ---END_RESULT---
 ```
 
-**SE qualquer criterio falhar → continuar para Fase 1.**
+**IF any criterion fails → continue to Phase 1.**
 
 ---
 
-## Fase 1: HEALTH CHECK
+## Phase 1: HEALTH CHECK
 
-**Verificar saude das entidades existentes antes de modificar.**
+**Verify health of existing entities before modifying.**
 
 ```javascript
 const graph = mcp__memory__read_graph()
 const entities = graph.entities.filter(e => e.name.startsWith(prefix))
 ```
 
-### Verificacoes
+### Verifications
 
-| Check | Acao |
-|-------|------|
-| Observation menciona arquivo? | `Glob` para verificar se existe |
-| Observation tem data > 90 dias? | Marcar como STALE |
-| Entidade Tier 3 > 60 dias sem update? | Candidata a DELETE |
-| Entidade tem observations duplicadas? | Candidata a CONSOLIDAR |
+| Check | Action |
+|-------|--------|
+| Observation mentions file? | `Glob` to verify if exists |
+| Observation date > 90 days? | Mark as STALE |
+| Tier 3 entity > 60 days without update? | Candidate for DELETE |
+| Entity has duplicate observations? | Candidate for CONSOLIDATE |
 
-### Reportar
+### Report
 
 ```
 Health Check:
-- Total: {n} entidades
+- Total: {n} entities
 - Healthy: {n}
-- Stale (> 90 dias): {lista}
-- Arquivos inexistentes: {lista}
+- Stale (> 90 days): {list}
+- Non-existent files: {list}
 ```
 
-**SE encontrou stale/inexistentes → limpar antes de prosseguir.**
+**IF found stale/non-existent → clean before proceeding.**
 
 ---
 
-## Fase 2: CLEANUP (se necessario)
+## Phase 2: CLEANUP (if necessary)
 
-**Executar se > 8 entidades OU health check encontrou problemas.**
+**Execute if > 8 entities OR health check found problems.**
 
-Prioridade de DELETE:
-1. Entidades com arquivos inexistentes
-2. Tier 3 (patterns) > 60 dias
-3. Tier 2 mais antigos (por data na observation)
-4. **NUNCA** deletar Tier 1
-
----
-
-## Fase 3: AVALIAR NOVO CONHECIMENTO
-
-Para cada coisa aprendida durante o trabalho:
-
-```
-1. grep/ls encontra em < 30s?     → NAO SALVAR
-2. E trivial ou efemero?          → NAO SALVAR
-3. Ja existe entidade similar?    → ATUALIZAR existente
-4. Passa criterio do Tier?        → SALVAR
-5. Caso contrario                 → NAO SALVAR
-```
+DELETE priority:
+1. Entities with non-existent files
+2. Tier 3 (patterns) > 60 days
+3. Oldest Tier 2 (by observation date)
+4. **NEVER** delete Tier 1
 
 ---
 
-## Fase 4: CRIAR/ATUALIZAR (se necessario)
+## Phase 3: EVALUATE NEW KNOWLEDGE
 
-### Formato Temporal Obrigatorio
-
-**TODA observation datada DEVE ter formato:**
+For each thing learned during work:
 
 ```
-"[YYYY-MM-DD] Informacao"
+1. grep/ls finds in < 30s?        → DO NOT SAVE
+2. Is trivial or ephemeral?       → DO NOT SAVE
+3. Similar entity exists?         → UPDATE existing
+4. Passes Tier criteria?          → SAVE
+5. Otherwise                      → DO NOT SAVE
 ```
 
-**Observations atemporais (fatos permanentes):**
+---
+
+## Phase 4: CREATE/UPDATE (if necessary)
+
+### Mandatory Temporal Format
+
+**EVERY dated observation MUST have format:**
 
 ```
-"Comando: npm run test"
-"Ordem: .env → variables.tf → main.tf"
+"[YYYY-MM-DD] Information"
 ```
 
-### Exemplo Completo
+**Atemporal observations (permanent facts):**
+
+```
+"Command: npm run test"
+"Order: .env → variables.tf → main.tf"
+```
+
+### Complete Example
 
 ```javascript
 mcp__memory__create_entities({
   entities: [{
-    name: "sm:procedimento:nova-env-var-secret",
-    entityType: "procedimento",
+    name: "sm:procedure:new-env-var-secret",
+    entityType: "procedure",
     observations: [
-      "Adicionar env var sensivel (secret) ao projeto",
-      "Ordem: .env.example → variables.tf → main.tf → tfvars.example → generate-tfvars.sh",
-      "5 arquivos precisam ser editados em sequencia correta",
-      "[2026-01-15] Descoberto apos errar a ordem 2x"
+      "Add sensitive env var (secret) to project",
+      "Order: .env.example → variables.tf → main.tf → tfvars.example → generate-tfvars.sh",
+      "5 files need to be edited in correct sequence",
+      "[2026-01-15] Discovered after getting order wrong 2x"
     ]
   }]
 })
@@ -153,90 +153,90 @@ mcp__memory__create_entities({
 
 ---
 
-## TAXONOMIA: 3 Tiers
+## TAXONOMY: 3 Tiers
 
-### Tier 1: NUCLEO (NUNCA deletar)
+### Tier 1: CORE (NEVER delete)
 
-| Entidade | Conteudo |
-|----------|----------|
-| `{prefix}:config:main` | Comandos, porta, quality gates |
-| `{prefix}:stack:main` | Tecnologias e versoes |
+| Entity | Content |
+|--------|---------|
+| `{prefix}:config:main` | Commands, port, quality gates |
+| `{prefix}:stack:main` | Technologies and versions |
 
-**Limite:** 2 entidades
+**Limit:** 2 entities
 
-### Tier 2: CONHECIMENTO TACITO (Raramente deletar)
+### Tier 2: TACIT KNOWLEDGE (Rarely delete)
 
-| Tipo | Quando usar |
+| Type | When to use |
 |------|-------------|
-| `{prefix}:procedimento:*` | How-to que envolve 3+ arquivos |
-| `{prefix}:decisao:*` | "Por que X ao inves de Y" com contexto externo |
-| `{prefix}:integracao:*` | Conexao com sistema externo |
+| `{prefix}:procedure:*` | How-to involving 3+ files |
+| `{prefix}:decision:*` | "Why X instead of Y" with external context |
+| `{prefix}:integration:*` | Connection with external system |
 
-**Criterio:** Levou > 30 min, envolve 3+ arquivos, grep nao encontra.
+**Criterion:** Took > 30 min, involves 3+ files, grep doesn't find.
 
-**Limite:** 5 entidades
+**Limit:** 5 entities
 
-### Tier 3: CONTEXTO (Deletar quando obsoleto)
+### Tier 3: CONTEXT (Delete when obsolete)
 
-| Tipo | Quando usar |
+| Type | When to use |
 |------|-------------|
-| `{prefix}:pattern:*` | Convencao nao documentada, facil de errar |
+| `{prefix}:pattern:*` | Undocumented convention, easy to get wrong |
 
-**Limite:** 3 entidades
+**Limit:** 3 entities
 
 ---
 
-## O QUE NUNCA SALVAR
+## WHAT TO NEVER SAVE
 
 ```
-❌ Tipos, funcoes, classes (grep encontra)
-❌ Algoritmos (codigo e fonte)
-❌ Bugs e fixes (commit message)
+❌ Types, functions, classes (grep finds)
+❌ Algorithms (code is source)
+❌ Bugs and fixes (commit message)
 ❌ Changelogs (git log)
-❌ Estrutura de pastas (ls)
-❌ Fluxos de codigo (seguir imports)
-❌ Detalhes de implementacao
+❌ Folder structure (ls)
+❌ Code flows (follow imports)
+❌ Implementation details
 ```
 
-**REGRA:** Se `grep` ou `ls` encontra em < 30 segundos → NAO salvar.
+**RULE:** If `grep` or `ls` finds in < 30 seconds → DO NOT save.
 
 ---
 
-## Fase 5: RELATORIO
+## Phase 5: REPORT
 
 ```
 ## Memory Sync Report
 
-Prefixo: {prefix}
+Prefix: {prefix}
 Status: SYNC | SKIP
 
 ### Health Check
 - Healthy: {n}
-- Stale: {lista ou "nenhum"}
-- Cleaned: {lista ou "nenhum"}
+- Stale: {list or "none"}
+- Cleaned: {list or "none"}
 
-### Entidades: {count}/10
-- Tier 1 (Nucleo): {n}
-- Tier 2 (Conhecimento): {n}
-- Tier 3 (Contexto): {n}
+### Entities: {count}/10
+- Tier 1 (Core): {n}
+- Tier 2 (Knowledge): {n}
+- Tier 3 (Context): {n}
 
-### Acoes
-- Criadas: {lista ou "nenhuma"}
-- Atualizadas: {lista ou "nenhuma"}
-- Deletadas: {lista ou "nenhuma"}
+### Actions
+- Created: {list or "none"}
+- Updated: {list or "none"}
+- Deleted: {list or "none"}
 
-### Decisao
-- Nao salvei: {o que foi considerado mas rejeitado}
+### Decision
+- Did not save: {what was considered but rejected}
 ```
 
 ---
 
-## Output Obrigatorio
+## Mandatory Output
 
 ```
 ---AGENT_RESULT---
 STATUS: PASS | SKIP | FAIL
-REASON: {motivo se SKIP}
+REASON: {reason if SKIP}
 ENTITIES_BEFORE: {n}
 ENTITIES_AFTER: {n}
 HEALTH_ISSUES: {n}
@@ -249,19 +249,19 @@ BLOCKING: false
 ## Quick Reference
 
 ```
-FASE 0: Skip se mudanca trivial (< 30 linhas, < 20 min, sem descoberta)
-FASE 1: Health check (arquivos existem? observations > 90 dias?)
-FASE 2: Cleanup se > 8 entidades ou health issues
-FASE 3: Avaliar novo conhecimento (grep test, tier criteria)
-FASE 4: Criar/atualizar com formato temporal
-FASE 5: Relatorio
+PHASE 0: Skip if trivial change (< 30 lines, < 20 min, no discovery)
+PHASE 1: Health check (files exist? observations > 90 days?)
+PHASE 2: Cleanup if > 8 entities or health issues
+PHASE 3: Evaluate new knowledge (grep test, tier criteria)
+PHASE 4: Create/update with temporal format
+PHASE 5: Report
 
-SALVAR:
-✅ Procedimentos multi-arquivo
-✅ Decisoes com contexto externo
-✅ Integracoes externas
-✅ Patterns nao-obvios
+SAVE:
+✅ Multi-file procedures
+✅ Decisions with external context
+✅ External integrations
+✅ Non-obvious patterns
 
-NAO SALVAR:
-❌ Qualquer coisa que grep encontra em < 30s
+DO NOT SAVE:
+❌ Anything grep finds in < 30s
 ```

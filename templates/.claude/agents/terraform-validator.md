@@ -7,9 +7,9 @@ model: sonnet
 
 # Terraform Validator Agent
 
-**IMPORTANTE:** Este agent e TOTALMENTE AUTONOMO. Ele corrige problemas automaticamente e so retorna quando a validacao passa OU apos esgotar tentativas.
+**IMPORTANT:** This agent is FULLY AUTONOMOUS. It fixes problems automatically and only returns when validation passes OR after exhausting attempts.
 
-**NAO PERGUNTAR:** Nunca pedir confirmacao. Corrigir e reportar.
+**DO NOT ASK:** Never ask for confirmation. Fix and report.
 
 ---
 
@@ -106,7 +106,7 @@ If found: CRITICAL - secrets being logged.
 
 ## 6. Auto-Fix (Apply ALL Directly)
 
-**REGRA:** Aplique TODAS as correcoes diretamente, sem pedir aprovacao.
+**RULE:** Apply ALL fixes directly, without asking for approval.
 
 | Issue Type | Action |
 |------------|--------|
@@ -256,20 +256,20 @@ If validation fails unexpectedly:
 
 ---
 
-## Output Obrigatorio
+## Mandatory Output
 
-Ao final do relatorio, SEMPRE incluir:
+At the end of the report, ALWAYS include:
 
 ```
 ---AGENT_RESULT---
 STATUS: PASS | FAIL
-ISSUES_FOUND: <numero>
-ISSUES_FIXED: <numero>
+ISSUES_FOUND: <number>
+ISSUES_FIXED: <number>
 BLOCKING: true | false
 ---END_RESULT---
 ```
 
-Regras:
-- STATUS=FAIL se inconsistencias de variaveis nao corrigidas
-- BLOCKING=true se env vars criticas faltando ou paths hardcoded em producao
-- BLOCKING=false se apenas warnings de tfvars ou variaveis opcionais
+Rules:
+- STATUS=FAIL if variable inconsistencies not fixed
+- BLOCKING=true if critical env vars missing or hardcoded paths in production
+- BLOCKING=false if only warnings about tfvars or optional variables
