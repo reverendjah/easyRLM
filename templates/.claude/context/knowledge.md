@@ -1,90 +1,98 @@
-# Conhecimento Tacito
+# Tacit Knowledge
 
-> **TIER 3 - TACITO**: Buscado por relevancia quando keywords aparecem.
-> Keywords que ativam: "por que", "decisao", "historia", "problema", "armadilha"
+> **TIER 3 - TACIT**: Searched by relevance when keywords appear.
+> Keywords that trigger: "why", "decision", "history", "problem", "pitfall"
 >
-> Guardar aqui: conhecimento que NAO esta no codigo e levaria tempo redescobrir.
+> Store here: knowledge NOT in the code that would take time to rediscover.
 
 ---
 
-## Decisoes Importantes
+## Project Rules
 
-### Por que {Tecnologia X} ao inves de {Tecnologia Y}?
+- All documentation must be in **English**
+- Context files are auto-indexed on install
+- Workflows (/feature, /debug) must be followed completely
 
-**Contexto**: {Situacao que levou a decisao}
+---
 
-**Decisao**: Escolhemos X porque:
-- {Razao 1}
-- {Razao 2}
-- {Razao 3}
+## Important Decisions
+
+### Why {Technology X} instead of {Technology Y}?
+
+**Context**: {Situation that led to the decision}
+
+**Decision**: We chose X because:
+- {Reason 1}
+- {Reason 2}
+- {Reason 3}
 
 **Trade-offs**:
-- Pro: {vantagem}
-- Con: {desvantagem}
+- Pro: {advantage}
+- Con: {disadvantage}
 
-**Data**: {YYYY-MM-DD}
-**Responsavel**: {quem decidiu}
-
----
-
-## Armadilhas Conhecidas
-
-### {Nome da Armadilha}
-
-**Sintoma**: {O que acontece quando cai nela}
-
-**Causa**: {Por que acontece}
-
-**Solucao**: {Como resolver/evitar}
-
-**Descoberto em**: {YYYY-MM-DD}
-**Contexto**: {Como descobrimos}
+**Date**: {YYYY-MM-DD}
+**Responsible**: {who decided}
 
 ---
 
-## Fluxos Nao-Obvios
+## Known Pitfalls
 
-### {Nome do Fluxo}
+### {Pitfall Name}
 
-**Quando acontece**: {Trigger}
+**Symptom**: {What happens when you fall into it}
 
-**Passos**:
-1. {Passo 1}
-2. {Passo 2}
-3. {Passo 3}
+**Cause**: {Why it happens}
 
-**Cuidados**:
-- {Cuidado 1}
-- {Cuidado 2}
+**Solution**: {How to resolve/avoid}
+
+**Discovered on**: {YYYY-MM-DD}
+**Context**: {How we discovered it}
 
 ---
 
-## Integracoes Problematicas
+## Non-Obvious Flows
 
-### {Nome do Sistema Externo}
+### {Flow Name}
 
-**Problema**: {Limitacao ou bug conhecido}
+**When it happens**: {Trigger}
 
-**Workaround**: {Como contornamos}
+**Steps**:
+1. {Step 1}
+2. {Step 2}
+3. {Step 3}
 
-**Status**: {Resolvido / Em aberto / Monitorando}
-
-**Ultima ocorrencia**: {YYYY-MM-DD}
-
----
-
-## Historico de Incidents
-
-### {YYYY-MM-DD} - {Titulo do Incident}
-
-**Impacto**: {Severidade e usuarios afetados}
-
-**Causa raiz**: {O que causou}
-
-**Fix**: {Como resolvemos}
-
-**Prevencao**: {O que fizemos para evitar no futuro}
+**Cautions**:
+- {Caution 1}
+- {Caution 2}
 
 ---
 
-*Ultima atualizacao: {DATA}*
+## Problematic Integrations
+
+### {External System Name}
+
+**Problem**: {Known limitation or bug}
+
+**Workaround**: {How we work around it}
+
+**Status**: {Resolved / Open / Monitoring}
+
+**Last occurrence**: {YYYY-MM-DD}
+
+---
+
+## Incident History
+
+### {YYYY-MM-DD} - {Incident Title}
+
+**Impact**: {Severity and affected users}
+
+**Root cause**: {What caused it}
+
+**Fix**: {How we resolved it}
+
+**Prevention**: {What we did to prevent in the future}
+
+---
+
+*Last updated: {DATE}*

@@ -1,20 +1,20 @@
-# {Nome do Projeto}
+# {Project Name}
 
-> **TIER 1 - NUCLEO**: Este arquivo e SEMPRE carregado no inicio da sessao.
-> Mantenha conciso (~50-100 linhas). Informacoes essenciais apenas.
+> **TIER 1 - CORE**: This file is ALWAYS loaded at session start.
+> Keep concise (~50-100 lines). Essential information only.
 
 ---
 
-## Descricao
+## Description
 
-{Uma frase descrevendo o que o projeto faz}
+{One sentence describing what the project does}
 
 ---
 
 ## Stack
 
-| Camada | Tecnologia | Versao |
-|--------|------------|--------|
+| Layer | Technology | Version |
+|-------|------------|---------|
 | Runtime | Node.js / Python / Go | X.Y |
 | Framework | Express / FastAPI / Gin | X.Y |
 | Database | PostgreSQL / MongoDB | X.Y |
@@ -22,13 +22,13 @@
 
 ---
 
-## Comandos
+## Commands
 
 ```bash
-# Desenvolvimento
+# Development
 npm run dev
 
-# Testes
+# Tests
 npm test
 
 # Build
@@ -40,45 +40,45 @@ npm run lint
 
 ---
 
-## Estrutura de Pastas
+## Folder Structure
 
 ```
 src/
-├── api/           # Endpoints REST/GraphQL
-├── services/      # Logica de negocio
+├── api/           # REST/GraphQL endpoints
+├── services/      # Business logic
 ├── models/        # Types, schemas, entities
-├── utils/         # Helpers e funcoes utilitarias
-└── config/        # Configuracoes e constantes
+├── utils/         # Helpers and utilities
+└── config/        # Configuration and constants
 ```
 
 ---
 
 ## Entry Points
 
-| Tipo | Arquivo | Descricao |
-|------|---------|-----------|
-| API | src/index.ts | Servidor HTTP principal |
-| Jobs | src/cron/index.ts | Tarefas agendadas |
-| CLI | src/cli.ts | Comandos de terminal |
+| Type | File | Description |
+|------|------|-------------|
+| API | src/index.ts | Main HTTP server |
+| Jobs | src/cron/index.ts | Scheduled tasks |
+| CLI | src/cli.ts | Terminal commands |
 
 ---
 
-## Variaveis de Ambiente Criticas
+## Critical Environment Variables
 
-| Variavel | Proposito | Exemplo |
-|----------|-----------|---------|
-| DATABASE_URL | Conexao com DB | postgres://... |
-| API_KEY | Chave de API externa | sk-... |
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| DATABASE_URL | DB connection | postgres://... |
+| API_KEY | External API key | sk-... |
 
 ---
 
 ## Quality Gates
 
-- [ ] Testes passando (`npm test`)
-- [ ] Lint sem erros (`npm run lint`)
-- [ ] Build sem erros (`npm run build`)
+- [ ] Tests passing (`npm test`)
+- [ ] Lint without errors (`npm run lint`)
+- [ ] Build without errors (`npm run build`)
 - [ ] Coverage > X%
 
 ---
 
-*Ultima atualizacao: {DATA}*
+*Last updated: {DATE}*

@@ -1,14 +1,14 @@
-# Arquitetura
+# Architecture
 
-> **TIER 2 - ESTRUTURAL**: Carregado quando task envolve arquitetura, modulos, fluxos.
-> Keywords que ativam: "arquitetura", "modulo", "fluxo", "integracao", "como funciona"
+> **TIER 2 - STRUCTURAL**: Loaded when task involves architecture, modules, flows.
+> Keywords that trigger: "architecture", "module", "flow", "integration", "how it works"
 
 ---
 
-## Modulos Principais
+## Main Modules
 
-| Modulo | Responsabilidade | Depende de |
-|--------|------------------|------------|
+| Module | Responsibility | Depends on |
+|--------|----------------|------------|
 | api | HTTP handlers, routing | services, auth |
 | services | Business logic | models, external |
 | models | Data types, validation | - |
@@ -16,7 +16,7 @@
 
 ---
 
-## Fluxo de Dados
+## Data Flow
 
 ```
 Request
@@ -28,17 +28,17 @@ Request
        │
        ▼
 ┌──────────────┐
-│   Handler    │  Validacao de input (Zod)
+│   Handler    │  Input validation (Zod)
 └──────┬───────┘
        │
        ▼
 ┌──────────────┐
-│   Service    │  Logica de negocio
+│   Service    │  Business logic
 └──────┬───────┘
        │
        ▼
 ┌──────────────┐
-│    Model     │  Acesso a dados
+│    Model     │  Data access
 └──────┬───────┘
        │
        ▼
@@ -47,17 +47,17 @@ Response (JSON)
 
 ---
 
-## Padroes de API
+## API Patterns
 
 ### REST Conventions
-- `GET /resources` - Listar (com paginacao)
-- `GET /resources/:id` - Detalhe
-- `POST /resources` - Criar
-- `PUT /resources/:id` - Atualizar (completo)
-- `PATCH /resources/:id` - Atualizar (parcial)
-- `DELETE /resources/:id` - Remover
+- `GET /resources` - List (with pagination)
+- `GET /resources/:id` - Detail
+- `POST /resources` - Create
+- `PUT /resources/:id` - Update (complete)
+- `PATCH /resources/:id` - Update (partial)
+- `DELETE /resources/:id` - Remove
 
-### Paginacao
+### Pagination
 ```json
 {
   "data": [...],
@@ -80,24 +80,24 @@ Response (JSON)
 
 ---
 
-## Integracoes Externas
+## External Integrations
 
-| Sistema | Proposito | Auth | Docs |
-|---------|-----------|------|------|
-| Stripe | Pagamentos | API Key | stripe.com/docs |
+| System | Purpose | Auth | Docs |
+|--------|---------|------|------|
+| Stripe | Payments | API Key | stripe.com/docs |
 | SendGrid | Email | API Key | sendgrid.com/docs |
 | AWS S3 | Storage | IAM Role | aws.amazon.com/s3 |
 
 ---
 
-## Decisoes Arquiteturais
+## Architectural Decisions
 
-### ADR-001: {Titulo}
-- **Status**: Aceito
-- **Contexto**: {Por que precisavamos decidir}
-- **Decisao**: {O que decidimos}
-- **Consequencias**: {Trade-offs}
+### ADR-001: {Title}
+- **Status**: Accepted
+- **Context**: {Why we needed to decide}
+- **Decision**: {What we decided}
+- **Consequences**: {Trade-offs}
 
 ---
 
-*Ultima atualizacao: {DATA}*
+*Last updated: {DATE}*

@@ -1,7 +1,7 @@
-# Padroes de Codigo
+# Code Patterns
 
-> **TIER 2 - REFERENCIA**: Carregado quando task envolve criar codigo novo.
-> Keywords que ativam: "padrao", "exemplo", "como fazer", "template"
+> **TIER 2 - REFERENCE**: Loaded when task involves creating new code.
+> Keywords that trigger: "pattern", "example", "how to", "template"
 
 ---
 
@@ -13,7 +13,7 @@ import { z } from 'zod';
 import { AppError } from '@/utils/errors';
 import { userService } from '@/services/user';
 
-// Schema de validacao
+// Validation schema
 const CreateUserSchema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
@@ -94,7 +94,7 @@ export class AppError extends Error {
   }
 }
 
-// Uso
+// Usage
 throw new AppError('USER_NOT_FOUND', 404);
 throw new AppError('INVALID_INPUT', 400, 'Email is required');
 ```
@@ -169,7 +169,7 @@ export const authMiddleware = async (
 ```typescript
 import { z } from 'zod';
 
-// Base schemas reutilizaveis
+// Reusable base schemas
 const emailSchema = z.string().email();
 const idSchema = z.string().uuid();
 const paginationSchema = z.object({
@@ -177,17 +177,17 @@ const paginationSchema = z.object({
   limit: z.number().min(1).max(100).default(20),
 });
 
-// Schema composto
+// Composite schema
 export const CreateUserSchema = z.object({
   name: z.string().min(2).max(100),
   email: emailSchema,
   role: z.enum(['admin', 'user']).default('user'),
 });
 
-// Inferir tipo do schema
+// Infer type from schema
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 ```
 
 ---
 
-*Ultima atualizacao: {DATA}*
+*Last updated: {DATE}*

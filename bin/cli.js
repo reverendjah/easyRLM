@@ -1,17 +1,38 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
+import { execSync } from 'child_process';
 import { detect } from '../lib/detector.js';
 import { install } from '../lib/installer.js';
 import { update } from '../lib/updater.js';
 import { fix } from '../lib/fixer.js';
 import { validate } from '../lib/validator.js';
 
-const VERSION = '1.4.1';
+const VERSION = '1.5.0';
+
+// Initialize context if placeholders detected (idempotent)
+async function initContext(cwd) {
+  const initScript = `${cwd}/scripts/init-context.sh`;
+  try {
+    const result = execSync(`bash "${initScript}"`, {
+      cwd,
+      stdio: 'pipe',
+      encoding: 'utf-8'
+    });
+    if (result.includes('initialized:')) {
+      console.log(chalk.green(`  ✓ ${result.trim()}`));
+    }
+    // "skipping" means already initialized - that's fine
+  } catch (e) {
+    // Script not found or failed - not critical
+  }
+}
 
 async function main() {
   console.log(chalk.cyan(`\nEasy RLM v${VERSION}`));
   console.log(chalk.cyan('─'.repeat(20)));
+
+  const cwd = process.cwd();
 
   try {
     // Phase 1: Detect state
@@ -33,7 +54,7 @@ async function main() {
         break;
 
       case 'OUTDATED':
-        console.log(chalk.yellow(`\nUpdating Easy RLM (${state.currentVersion} → ${VERSION})...`));
+        console.log(chalk.yellow(`\nUpdating Easy RLM...`));
         result = await update(state);
         // Always sync system files after update
         await validate();
@@ -47,7 +68,7 @@ async function main() {
         break;
 
       case 'OK':
-        console.log(chalk.green('\nEasy RLM already configured!'));
+        console.log(chalk.green('\nEasy RLM configured!'));
         result = await validate();
         break;
 
@@ -56,7 +77,11 @@ async function main() {
         process.exit(1);
     }
 
-    // Phase 3: Report
+    // Phase 3: ALWAYS try to initialize context (idempotent)
+    // This ensures placeholders are replaced with real project data
+    await initContext(cwd);
+
+    // Phase 4: Report
     if (result.success) {
       console.log(chalk.green('\n✓ Easy RLM ready!'));
       console.log(chalk.gray('  Use /feature or /debug in Claude Code.\n'));

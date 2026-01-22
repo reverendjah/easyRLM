@@ -1,77 +1,77 @@
-# Estado Atual
+# Current State
 
-> **VOLATIL**: Atualizado automaticamente durante o trabalho.
-> Permite retomar sessao de onde parou.
-
----
-
-## Sessao Ativa
-
-**Iniciada em**: {YYYY-MM-DD HH:MM}
-**Tipo**: feature | debug | exploracao
+> **VOLATILE**: Updated automatically during work.
+> Allows resuming session from where it stopped.
 
 ---
 
-## Feature em Andamento
+## Active Session
 
-**Nome**: {Nome descritivo}
+**Started at**: {YYYY-MM-DD HH:MM}
+**Type**: feature | debug | exploration
+
+---
+
+## Feature in Progress
+
+**Name**: {Descriptive name}
 **Slug**: {slug-kebab-case}
-**Fase**: {01-understand | 02-analyze | ... | 09-evaluate}
+**Phase**: {01-understand | 02-analyze | ... | 09-evaluate}
 
-### Arquivos Modificados
-- [ ] `src/path/to/file.ts` - {descricao curta}
-- [ ] `src/path/to/another.ts` - {descricao curta}
+### Modified Files
+- [ ] `src/path/to/file.ts` - {short description}
+- [ ] `src/path/to/another.ts` - {short description}
 
-### Decisoes Tomadas
-1. {Decisao 1}
-2. {Decisao 2}
+### Decisions Made
+1. {Decision 1}
+2. {Decision 2}
 
-### Decisoes Pendentes
-- [ ] {Pergunta que precisa resposta}
-- [ ] {Outra pergunta}
-
----
-
-## Debug em Andamento
-
-**Erro**: {Mensagem de erro ou descricao}
-**Severidade**: critical | high | medium | low
-
-### Hipoteses
-1. [ ] {Hipotese 1} - {status: testando | descartada | confirmada}
-2. [ ] {Hipotese 2} - {status}
-
-### Arquivos Investigados
-- `src/path/file.ts:45` - {o que encontrou}
-- `src/path/other.ts:120` - {o que encontrou}
-
-### Causa Raiz
-{Quando identificada, documentar aqui}
+### Pending Decisions
+- [ ] {Question that needs answer}
+- [ ] {Another question}
 
 ---
 
-## Contexto Relevante
+## Debug in Progress
 
-### Ultimo Comando Executado
+**Error**: {Error message or description}
+**Severity**: critical | high | medium | low
+
+### Hypotheses
+1. [ ] {Hypothesis 1} - {status: testing | discarded | confirmed}
+2. [ ] {Hypothesis 2} - {status}
+
+### Files Investigated
+- `src/path/file.ts:45` - {what was found}
+- `src/path/other.ts:120` - {what was found}
+
+### Root Cause
+{When identified, document here}
+
+---
+
+## Relevant Context
+
+### Last Command Executed
 ```bash
-{comando}
+{command}
 ```
 
-### Ultimo Erro Visto
+### Last Error Seen
 ```
-{mensagem de erro}
+{error message}
 ```
 
-### Notas Rapidas
-- {Nota 1}
-- {Nota 2}
+### Quick Notes
+- {Note 1}
+- {Note 2}
 
 ---
 
-## Proximo Passo
+## Next Step
 
-{O que fazer quando retomar esta sessao}
+{What to do when resuming this session}
 
 ---
 
-*Ultima atualizacao: {TIMESTAMP}*
+*Last updated: {TIMESTAMP}*
