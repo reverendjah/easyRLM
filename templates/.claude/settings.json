@@ -5,7 +5,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./scripts/load-context.sh"
+            "command": "bash ./scripts/load-context.sh",
+            "timeout": 10000
           }
         ]
       }
@@ -15,7 +16,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./scripts/extract-decisions.sh"
+            "command": "bash ./scripts/extract-decisions.sh",
+            "timeout": 10000
           }
         ]
       }
