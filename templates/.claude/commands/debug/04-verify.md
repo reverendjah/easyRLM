@@ -148,6 +148,11 @@ TodoWrite({
 3. FORBIDDEN more than 3 attempts in self-healing
 4. FORBIDDEN to leave debug script in scripts/ (convert to test or delete)
 
+```bash
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
+```
+
 ---
 
 ## NEXT PHASE

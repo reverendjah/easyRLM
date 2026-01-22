@@ -101,6 +101,9 @@ jq '
   .resumeHint = "Quality complete. Next: E2E validation" |
   .lastStep = "Step 4: Update State"
 ' .claude/workflow-state.json > .claude/workflow-state.tmp && mv .claude/workflow-state.tmp .claude/workflow-state.json
+
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
 ```
 
 ---

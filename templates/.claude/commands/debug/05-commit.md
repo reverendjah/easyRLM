@@ -100,6 +100,11 @@ Report to user: fix committed and pushed.
 4. **NEVER** --force push
 5. **NEVER** commit if verify failed
 
+```bash
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
+```
+
 ---
 
 ## NEXT PHASE

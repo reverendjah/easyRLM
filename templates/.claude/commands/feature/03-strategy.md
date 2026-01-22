@@ -292,6 +292,9 @@ if command -v jq &> /dev/null; then
 else
   echo "Update .claude/workflow-state.json: currentPhase=04-red, add 03-strategy to completedPhases"
 fi
+
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
 ```
 
 ---

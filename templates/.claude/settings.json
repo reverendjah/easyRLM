@@ -11,6 +11,17 @@
         ]
       }
     ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./scripts/save-context.sh",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [

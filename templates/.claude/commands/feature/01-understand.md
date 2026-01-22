@@ -211,6 +211,11 @@ EOF
 
 **Note:** Replace `${FEATURE_SLUG}` with actual slug and `${TIMESTAMP}` with `date -u +%Y-%m-%dT%H:%M:%SZ`
 
+```bash
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
+```
+
 ---
 
 ## NEXT PHASE

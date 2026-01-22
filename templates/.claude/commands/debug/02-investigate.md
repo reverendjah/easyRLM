@@ -86,6 +86,11 @@ TodoWrite({
 
 Root cause documented in `.claude/debug/root-cause.md`.
 
+```bash
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
+```
+
 ---
 
 ## NEXT PHASE

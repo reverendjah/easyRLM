@@ -135,3 +135,8 @@ Report to user:
 3. **MAXIMUM** 3 suggestions per execution (avoid decision fatigue)
 4. **PRIORITIZE** high priority problems first
 5. **DO NOT** suggest changes if score >= 90% in all criteria
+
+```bash
+# Sync context (persistence layer 1) - marks workflow as complete
+bash ./scripts/save-context.sh 2>/dev/null || true
+```

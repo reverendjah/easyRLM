@@ -125,6 +125,9 @@ else
   echo "Update .claude/workflow-state.json: currentPhase=COMPLETED, all phases complete"
 fi
 
+# Sync context (persistence layer 1) - marks workflow as complete
+bash ./scripts/save-context.sh 2>/dev/null || true
+
 echo "✅ Workflow /feature COMPLETE"
 cat .claude/workflow-state.json
 ```

@@ -113,6 +113,11 @@ TodoWrite({
 
 Bug reproduced with evidence in `.claude/debug/reproduction.md`.
 
+```bash
+# Sync context (persistence layer 1)
+bash ./scripts/save-context.sh 2>/dev/null || true
+```
+
 ---
 
 ## NEXT PHASE
