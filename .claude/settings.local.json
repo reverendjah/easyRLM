@@ -57,11 +57,12 @@
       "Bash(source ~/.bashrc)",
       "Bash(npm --version)",
       "Bash(mdfind:*)",
-            "Bash(npm publish:*)",
+      "Bash(npm publish:*)",
       "Bash(grep:*)",
       "Bash(git -C ~/Desktop/Claude/easyRLM show 88aa1cf --stat)",
       "WebFetch(domain:docs.anthropic.com)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npx easyrlm@1.4.0)"
     ]
   }
 }

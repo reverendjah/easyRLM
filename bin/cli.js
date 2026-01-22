@@ -7,7 +7,7 @@ import { update } from '../lib/updater.js';
 import { fix } from '../lib/fixer.js';
 import { validate } from '../lib/validator.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.4.1';
 
 async function main() {
   console.log(chalk.cyan(`\nEasy RLM v${VERSION}`));
@@ -28,16 +28,22 @@ async function main() {
       case 'NEW':
         console.log(chalk.yellow('\nInstalling Easy RLM...'));
         result = await install(state);
+        // Always sync system files after install
+        await validate();
         break;
 
       case 'OUTDATED':
         console.log(chalk.yellow(`\nUpdating Easy RLM (${state.currentVersion} → ${VERSION})...`));
         result = await update(state);
+        // Always sync system files after update
+        await validate();
         break;
 
       case 'BROKEN':
         console.log(chalk.yellow('\nRestoring missing files...'));
         result = await fix(state);
+        // Always sync system files after fix
+        await validate();
         break;
 
       case 'OK':
