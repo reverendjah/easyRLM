@@ -45,6 +45,18 @@ Grep: terms in {playbook-location}/
 |------|---------------|--------|
 | [what is needed] | [file:line] | Reuse/Extend/Create |
 
+### 3.3 CONTEXT REFRESH CHECKPOINT
+
+```
+IF grep returns 0 results for expected pattern:
+  → TRIGGER: Dynamic Context Refresh
+  → RE-GREP with broader terms
+  → CHECK: .claude/context/architecture.md for module locations
+  → DO NOT STOP - auto-recover and continue
+```
+
+See: `helpers/context-refresh.md` for full protocol.
+
 ---
 
 ## Step 4: Map Mocks

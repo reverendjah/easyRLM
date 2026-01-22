@@ -1,0 +1,12 @@
+{
+  "workflow": "feature",
+  "feature": "auto-context-2026-01-21",
+  "currentPhase": "05-green",
+  "completedPhases": ["01-understand", "02-analyze", "03-strategy", "04-red", "05-green"],
+  "startedAt": "2026-01-21T19:30:00Z",
+  "resumeHint": "Implementation complete. Hooks configured. Ready for E2E validation.",
+  "lastStep": "Implementation Complete",
+  "interview": ".claude/interviews/auto-context-2026-01-21.md",
+  "analysis": ".claude/analysis/auto-context-2026-01-21.md",
+  "contract": ".claude/contracts/auto-context-2026-01-21.md"
+}

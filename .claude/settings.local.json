@@ -15,7 +15,24 @@
       "Bash(dir:*)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(/usr/local/bin/node:*)",
+      "Bash(/opt/homebrew/bin/node:*)",
+      "Bash(echo:*)",
+      "Bash(brew --version:*)",
+      "Bash(curl:*)",
+      "Bash(bash)",
+      "Bash($HOME/.local/node/bin/node:*)",
+      "Bash($HOME/.local/node/bin/npm --version)",
+      "Bash(PATH=\"$HOME/.local/node/bin:$PATH\" npm install:*)",
+      "Bash(PATH=\"$HOME/.local/node/bin:$PATH\" node:*)",
+      "Bash(claude:*)",
+      "Bash(PATH=\"$HOME/.local/node/bin:$PATH\" timeout 30 node:*)",
+      "Bash(test:*)",
+      "Bash(chmod:*)",
+      "Bash(./scripts/load-context.sh:*)",
+      "Bash(./scripts/extract-decisions.sh:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Add auto-context persistence via Claude Code hooks\n\nImplements automatic context loading and decision saving:\n\n- SessionStart hook: loads project.md + knowledge.md automatically\n- SessionEnd hook: extracts decisions from transcript and saves to knowledge.md\n- Scripts in scripts/ directory for hook execution\n- Deduplication logic to prevent duplicate entries\n\nAlso includes:\n- Benchmark suite for context-recovery validation\n- RLM decomposition library \\(context-refresh, decomposer, recursive-agents\\)\n- Workflow artifacts \\(interviews, analysis, contracts\\)\n- Enhanced context-manager agent with auto-RLM for large codebases\n\nThis solves the two critical gaps identified in testing:\n- Auto-LOAD: context appears automatically at session start\n- Auto-SAVE: decisions are persisted at session end\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }

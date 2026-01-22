@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": "./scripts/load-context.sh",
+        "output": "prepend"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "command": "./scripts/extract-decisions.sh",
+        "input": "transcript"
+      }
+    ]
+  }
+}

@@ -88,3 +88,4 @@
 ---
 
 *Ultima atualizacao: {DATA}*
+- Decidimos usar hooks do Claude Code para enforcement real. We chose JWT for authentication because it works with SSR.

@@ -458,19 +458,79 @@ SESSION START
 
 ### RLM Decomposition (Large Codebases)
 
-```
-IF codebase > 100 files AND task requires broad analysis:
+**v1.1: Auto-triggered based on codebase size.**
 
-1. Grep to identify relevant modules
-2. For each module: Task(Explore, "analyze {module} for {goal}")
-3. Aggregate partial results
-4. Synthesize final response
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              AUTO-DECOMPOSITION THRESHOLDS                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  < 100 files OR < 50K tokens                                        │
+│  └── Strategy: DIRECT                                               │
+│  └── Action: Normal Grep/Read operations                            │
+│                                                                     │
+│  100-200 files OR 50K-100K tokens                                   │
+│  └── Strategy: CHUNKED (auto-triggered)                             │
+│  └── Action: Group directories, query in parallel                   │
+│                                                                     │
+│  > 200 files OR > 100K tokens                                       │
+│  └── Strategy: RECURSIVE (auto-triggered)                           │
+│  └── Action: Nested sub-agents with aggregation                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Decomposition Flow:**
+
+```
+1. context-manager auto-detects project size
+2. IF large: generates decomposition plan
+3. For each scope: Task(Explore, "analyze {scope} for {goal}")
+4. Aggregate results using synthesis strategy
+5. Continue with focused context
 
 RULES:
-- Max 5 parallel sub-tasks
-- Each sub-task with clear scope
+- Max 5 parallel sub-tasks per level
+- Max 2-3 recursion depth (prevents infinite loops)
+- Each sub-task scoped to specific directory
 - Always aggregate before responding
 ```
+
+### Dynamic Context Refresh (v1.1)
+
+**Mid-execution context refresh when assumptions become stale:**
+
+```
+REFRESH TRIGGERS:
+├── Error: "file not found"      → Re-grep for location
+├── Error: "function undefined"  → Re-scan module exports
+├── Error: "type mismatch"       → Re-load type definitions
+└── Working across 3+ modules    → Expand context window
+
+AUTOMATIC - no user prompt needed.
+```
+
+### Recursive Sub-Agents (v1.1)
+
+**Agents can invoke other agents when needed:**
+
+```
+code-reviewer
+├── can invoke → test-fixer (when fixes break tests)
+└── can invoke → Explore (when reviewing unfamiliar code)
+
+test-fixer
+└── can invoke → Explore (when tests reference unknown modules)
+
+context-manager
+├── can invoke → context-indexer (new project)
+└── can invoke → Explore (for decomposition)
+```
+
+**Depth limits prevent infinite recursion:**
+- code-reviewer: max depth 2
+- test-fixer: max depth 1
+- context-manager: max depth 2
 
 ### Why RLM (vs MCP Memory)
 

@@ -48,12 +48,19 @@ SESSION START
 └────────┬────────┘
          │
          ▼
+┌─────────────────┐
+│ DYNAMIC REFRESH │  ← v1.1: Auto-refresh if context becomes stale
+│ (automatic)     │     Triggers: file not found, undefined function,
+└────────┬────────┘              type mismatch, cross-module work
+         │
+         ▼
    END OF SESSION
          │
          ▼
 ┌─────────────────┐
 │ Update          │  ← Save state for next session
 │ current.md      │
+│ knowledge.md    │  ← Auto-update with discoveries (v1.1)
 └─────────────────┘
 ```
 

@@ -105,6 +105,14 @@ Contract checklist:
 ```
 while (failures AND attempts < 3):
     Identify error
+
+    # CONTEXT REFRESH CHECKPOINT
+    IF error contains "not found" OR "undefined" OR "type error":
+      → TRIGGER: Dynamic Context Refresh (does NOT count as attempt)
+      → Re-grep for missing file/function
+      → Update working context
+      → Retry with refreshed context
+
     Fix CODE (not test)
     Re-run
     attempts++
@@ -112,6 +120,8 @@ while (failures AND attempts < 3):
 if still failing:
     STOP and report to user
 ```
+
+See: `helpers/context-refresh.md` for full protocol.
 
 ---
 

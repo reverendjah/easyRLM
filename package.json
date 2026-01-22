@@ -1,14 +1,19 @@
 {
   "name": "easyrlm",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Recursive Language Models for Claude Code - Persistent context management with Kakaroto Fields",
   "type": "module",
   "main": "lib/index.js",
   "bin": {
-    "easyrlm": "./bin/cli.js"
+    "easyrlm": "./bin/cli.js",
+    "easyrlm-benchmark": "./benchmark/bin/benchmark.js"
   },
   "scripts": {
-    "test": "node bin/cli.js"
+    "test": "node bin/cli.js",
+    "benchmark": "node benchmark/bin/benchmark.js",
+    "benchmark:base": "node benchmark/bin/benchmark.js --adapter base",
+    "benchmark:rlm": "node benchmark/bin/benchmark.js --adapter rlm",
+    "benchmark:compare": "node benchmark/bin/benchmark.js --adapter both --output markdown"
   },
   "keywords": [
     "claude",

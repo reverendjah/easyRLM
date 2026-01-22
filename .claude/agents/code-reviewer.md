@@ -1,8 +1,12 @@
 ---
 name: code-reviewer
 description: "Revisor focado em correção. Segurança, tipagem, bugs. BLOCKING."
-tools: Read, Edit, Grep, Glob, Bash, mcp__memory__search_nodes
+tools: Read, Edit, Grep, Glob, Bash, Task, mcp__memory__search_nodes
 model: opus
+recursion:
+  canInvoke: [test-fixer, Explore]
+  maxParallel: 3
+  maxDepth: 2
 ---
 
 # Code Reviewer
@@ -82,6 +86,29 @@ Corrige automaticamente issues críticas. Estilo e preferências são irrelevant
    - `npm run test` se houver > 3 correções
    - Confirmar funcionalidade preservada
 
+## Recursive Invocation
+
+This agent CAN invoke sub-agents when needed:
+
+| Sub-Agent | When to Invoke |
+|-----------|---------------|
+| `test-fixer` | After fixing code, if tests now fail |
+| `Explore` | When need to understand unfamiliar code area |
+
+### Invocation Pattern
+
+```
+IF fix breaks tests:
+  Task(test-fixer, "Fix tests broken by code-reviewer changes in {files}")
+
+IF unfamiliar code area (> 3 files):
+  Task(Explore, "Understand {module} to safely review")
+```
+
+**Depth limit:** 2 levels (code-reviewer → test-fixer → cannot invoke further)
+
+---
+
 ## Saída
 
 ### Revisão: [branch]
@@ -97,5 +124,6 @@ Corrige automaticamente issues críticas. Estilo e preferências são irrelevant
 STATUS: PASS | FAIL
 ISSUES_FOUND: n
 ISSUES_FIXED: n
+RECURSIVE_CALLS: n
 BLOCKING: true
 ---END_RESULT---

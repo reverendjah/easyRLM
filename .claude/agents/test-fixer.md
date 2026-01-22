@@ -1,8 +1,12 @@
 ---
 name: test-fixer
 description: "Test automation specialist. Use PROACTIVELY after implementation to run tests and fix any failures. Creates missing tests for new utility functions."
-tools: Read, Edit, Bash, Grep, Glob, mcp__memory__search_nodes
+tools: Read, Edit, Bash, Grep, Glob, Task, mcp__memory__search_nodes
 model: sonnet
+recursion:
+  canInvoke: [Explore]
+  maxParallel: 3
+  maxDepth: 1
 ---
 
 You are a test automation specialist.

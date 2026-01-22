@@ -262,6 +262,65 @@ This is an open-source project for the community. We want every developer using 
 
 ---
 
+## New in v1.1: Closer to Paper RLM
+
+Version 1.1 adds four key improvements based on the RLM paper recommendations:
+
+### 1. Benchmark Suite
+
+Compare Easy RLM vs base model performance:
+
+```bash
+npm run benchmark                 # Run all benchmarks
+npm run benchmark:compare         # Side-by-side comparison
+node benchmark/bin/benchmark.js --help
+```
+
+Includes implementations of:
+- **S-NIAH** — Needle-in-a-haystack (O(1) retrieval)
+- **OOLONG** — Semantic aggregation (O(N) complexity)
+- **OOLONG-Pairs** — Pairwise comparison (O(N²) complexity)
+- **CodeQA** — Code understanding
+
+### 2. Auto-Decomposition
+
+Context manager now auto-triggers RLM decomposition for large codebases:
+
+| Project Size | Trigger | Strategy |
+|--------------|---------|----------|
+| < 100 files | — | Direct queries |
+| 100-200 files | Automatic | Chunked decomposition |
+| > 200 files | Automatic | Recursive sub-agents |
+
+No manual configuration needed.
+
+### 3. Dynamic Context Refresh
+
+Workflows now auto-refresh context when:
+- Files are not found where expected
+- Functions are undefined
+- Types don't match
+- Working across 3+ modules
+
+The system re-queries the codebase and updates `knowledge.md` with discoveries.
+
+### 4. Recursive Sub-Agents
+
+Agents can now invoke other agents when needed:
+
+```
+code-reviewer
+  └── can invoke → test-fixer (when fixes break tests)
+  └── can invoke → Explore (when reviewing unfamiliar code)
+
+test-fixer
+  └── can invoke → Explore (when tests reference unknown modules)
+```
+
+Maximum recursion depth: 2-3 levels (prevents infinite loops).
+
+---
+
 ## Project Structure
 
 ```
@@ -273,7 +332,15 @@ easyrlm/
 │   ├── updater.js       # Smart updates
 │   ├── fixer.js         # Repair broken files
 │   ├── merger.js        # Merge CLAUDE.md intelligently
-│   └── validator.js     # Validate installation
+│   ├── validator.js     # Validate installation
+│   ├── decomposer.js    # Auto-decomposition logic
+│   ├── context-refresh.js # Dynamic refresh system
+│   └── recursive-agents.js # Agent coordination
+├── benchmark/
+│   ├── bin/benchmark.js # Benchmark CLI
+│   ├── lib/             # Runner, evaluators, reporter
+│   ├── adapters/        # Claude base vs RLM adapters
+│   └── benchmarks/      # S-NIAH, OOLONG, CodeQA
 ├── templates/.claude/   # All workflow files
 └── package.json
 ```

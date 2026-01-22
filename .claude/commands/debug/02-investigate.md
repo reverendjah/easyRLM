@@ -31,6 +31,21 @@ Identify:
 - How errors are handled in this area
 - Is there validation that should exist?
 
+### CONTEXT REFRESH CHECKPOINT
+
+```
+IF file in stack trace NOT in current working context:
+  → TRIGGER: Dynamic Context Refresh
+  → Expand context to include missing files
+  → Re-load .claude/context/architecture.md for module map
+
+IF grep returns unexpected location:
+  → Update knowledge.md with discovery
+  → Adjust investigation scope
+```
+
+See: `~/.claude/commands/feature/helpers/context-refresh.md` for full protocol.
+
 ---
 
 ## Step 3: Flow Tracing
