@@ -1,6 +1,6 @@
 {
   "name": "easyrlm",
-  "version": "1.1.0",
+  "version": "1.2.2",
   "description": "Recursive Language Models for Claude Code - Persistent context management with Kakaroto Fields",
   "type": "module",
   "main": "lib/index.js",
@@ -41,6 +41,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/easyrlm"
+    "url": "https://github.com/reverendjah/easyRLM"
   }
 }
