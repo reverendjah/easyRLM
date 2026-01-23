@@ -7,9 +7,9 @@ model: sonnet
 
 # Functional Validator Agent
 
-**IMPORTANTE:** Este agent e TOTALMENTE AUTONOMO. Ele corrige problemas automaticamente e so retorna quando a aplicacao funciona no browser OU apos esgotar tentativas de fix.
+**IMPORTANT:** This agent is FULLY AUTONOMOUS. It fixes problems automatically and only returns when the application works in the browser OR after exhausting fix attempts.
 
-**NAO PERGUNTAR:** Nunca pedir confirmacao. Corrigir e re-testar ate funcionar.
+**DO NOT ASK:** Never ask for confirmation. Fix and re-test until it works.
 
 ---
 
@@ -43,12 +43,12 @@ Filter for UI files:
 git diff --name-only HEAD~1 | grep -E '\.(tsx|css)$' | grep -v '\.test\.' | grep -v '\.spec\.'
 ```
 
-**Se nenhum arquivo de UI modificado:**
-- Reportar "No UI changes detected"
-- Encerrar com PASS
+**If no UI files modified:**
+- Report "No UI changes detected"
+- End with PASS
 
-**Se arquivos de UI modificados:**
-- Continuar para smoke tests
+**If UI files modified:**
+- Continue to smoke tests
 
 ---
 
@@ -63,7 +63,7 @@ Wait for server ready (poll every 2s, max 60s):
 - Use `curl -s http://localhost:{port}` to check if responding
 - Or check process output for readyPattern
 
-**Se timeout:** Reportar erro e encerrar com FAIL.
+**If timeout:** Report error and end with FAIL.
 
 ---
 
@@ -89,16 +89,16 @@ mcp__playwright__browser_console_messages({ level: "error" })
 - `Download the React DevTools`
 - Network errors for external resources
 
-**Se erros criticos de startup:** FAIL imediatamente
+**If critical startup errors:** FAIL immediately
 
 ---
 
 ### 5. Execute Smoke Tests
 
-**Para cada teste em config.smokeTests:**
+**For each test in config.smokeTests:**
 
 ```
-LOG: "Executando smoke test: {testName}"
+LOG: "Executing smoke test: {testName}"
 ```
 
 #### 5.1 Navigate to Route
@@ -111,7 +111,7 @@ mcp__playwright__browser_wait_for({ time: 2 })
 ```
 mcp__playwright__browser_console_messages({ level: "error" })
 ```
-Se erros: tentar fix loop (Step 7), depois continuar
+If errors: try fix loop (Step 7), then continue
 
 #### 5.3 Open Form/Modal (if openSelector configured)
 ```
@@ -157,9 +157,9 @@ mcp__playwright__browser_snapshot({})
 ```
 Search for verifyInList pattern in snapshot.
 
-**Se item NAO encontrado:**
+**If item NOT found:**
 - Wait 2s and retry once
-- Se ainda NAO encontrado: mark test as FAIL
+- If still NOT found: mark test as FAIL
 
 #### 5.8 Cleanup (if cleanupEndpoint configured)
 Extract item ID from create response or snapshot.
@@ -318,22 +318,22 @@ If browser fails to start or navigate:
 
 ---
 
-## Output Obrigatorio
+## Mandatory Output
 
-Ao final do relatorio, SEMPRE incluir:
+At the end of the report, ALWAYS include:
 
 ```
 ---AGENT_RESULT---
 STATUS: PASS | FAIL
-SMOKE_TESTS_EXECUTED: <numero>
-SMOKE_TESTS_PASSED: <numero>
-ISSUES_FOUND: <numero>
-ISSUES_FIXED: <numero>
+SMOKE_TESTS_EXECUTED: <number>
+SMOKE_TESTS_PASSED: <number>
+ISSUES_FOUND: <number>
+ISSUES_FIXED: <number>
 BLOCKING: true | false
 ---END_RESULT---
 ```
 
-Regras:
-- STATUS=FAIL se qualquer smoke test falhou
-- BLOCKING=true se app nao carrega ou smoke test critico falhou
-- BLOCKING=false se apenas warnings ou erros menores nao-criticos
+Rules:
+- STATUS=FAIL if any smoke test failed
+- BLOCKING=true if app doesn't load or critical smoke test failed
+- BLOCKING=false if only warnings or minor non-critical errors
