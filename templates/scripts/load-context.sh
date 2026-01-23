@@ -4,28 +4,26 @@
 
 CONTEXT_DIR=".claude/context"
 
-# Check if context needs deep indexing
-needs_indexing() {
-  # No knowledge.md = needs indexing
-  [ ! -f "$CONTEXT_DIR/knowledge.md" ] && return 0
-
-  # Has placeholders = needs indexing
+# Check if context has placeholders (needs /index)
+has_placeholders() {
+  # Check knowledge.md for placeholders
   grep -qE "\{(Nome|Project|Titulo|Tecnologia|TIMESTAMP|DATA|YYYY)\}" \
     "$CONTEXT_DIR/knowledge.md" 2>/dev/null && return 0
 
-  # Also check project.md for placeholders
+  # Check project.md for placeholders
   grep -qE "\{(Nome do Projeto|Project Name|Uma frase)\}" \
     "$CONTEXT_DIR/project.md" 2>/dev/null && return 0
 
-  # Context exists and has real content
+  # No placeholders found
   return 1
 }
 
-# Detect if auto-indexing is needed
-if needs_indexing; then
-  echo "---AUTO-INDEX-REQUIRED---"
-  echo "First-time setup: Project context needs indexing."
-  exit 0
+# Warn if context has placeholders but don't block
+if has_placeholders; then
+  echo "=== CONTEXT NOTICE ==="
+  echo "Project context has placeholder values."
+  echo "Run /index to populate with real project data."
+  echo ""
 fi
 
 # Normal context loading continues...

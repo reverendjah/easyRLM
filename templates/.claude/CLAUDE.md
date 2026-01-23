@@ -3,11 +3,17 @@
 ## Autonomy
 DO, don't ask. SEARCH, don't request context.
 
-## Workflows
-| Trigger | Action |
-|---------|--------|
-| create/add/implement feature | `/feature` |
-| bug/error/problem | `/debug` |
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/index` | Index/refresh project context |
+| `/feature` | Implement new feature |
+| `/debug` | Fix bug or error |
+| `/gate` | Run quality validation |
+
+**First time in project?** Run `/index` to set up context.
+**After major changes?** Run `/index` to refresh context.
 
 ## Code
 - Functions < 50 lines, max 2 nesting levels
@@ -19,16 +25,6 @@ DO, don't ask. SEARCH, don't request context.
 Code without test = PR rejected.
 Exceptions: config files, .d.ts, pure UI without logic.
 
-## Auto-Indexing (First Session)
-
-**IF** SessionStart output contains `---AUTO-INDEX-REQUIRED---`:
-1. Tell user: "First-time setup detected. Indexing project context..."
-2. Run: `Task context-indexer "Index this project and fill context files with real content"`
-3. After completion: "Done! Project context indexed."
-4. Continue normally with the user's request
-
-This happens ONCE per project. Subsequent sessions load indexed context directly.
-
 ## Context (RLM)
 
 **Kakaroto Fields** in `.claude/context/`:
@@ -38,7 +34,6 @@ This happens ONCE per project. Subsequent sessions load indexed context directly
 - `knowledge.md` - Search by relevant keywords
 - `current.md` - Load if resuming work
 
-**New project?** Auto-indexing will trigger on first session.
 **Large project (100+ files)?** Use RLM decomposition via sub-agents.
 
 Sync `current.md` at end of workflows.

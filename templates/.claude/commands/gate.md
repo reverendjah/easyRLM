@@ -264,6 +264,50 @@ Generate consolidated report:
 
 ---
 
+## Phase 8: Sync Knowledge Base
+
+After all validations complete, update knowledge base with learnings:
+
+### 8.1 Extract Lessons from Agent Reports
+
+Review what each agent found and fixed:
+
+- **code-reviewer**: Security issues, type violations found
+- **test-fixer**: Test failures, missing coverage
+- **code-simplifier**: Duplications, naming issues, dead code
+- **visual-validator**: UI errors, console errors
+- **terraform-validator**: Env inconsistencies
+
+### 8.2 Update knowledge.md
+
+Add new entries to `.claude/context/knowledge.md`:
+
+**Pitfalls discovered:**
+- Issues that caused test failures
+- Security patterns that were flagged
+- Type safety violations
+
+**Decisions made:**
+- Refactoring choices during simplification
+- Test strategy decisions
+- Architecture patterns applied
+
+**Patterns that caused issues:**
+- Code patterns that needed fixing
+- Anti-patterns to avoid
+
+### 8.3 Rebuild CLAUDE.md
+
+```bash
+bash scripts/init-context.sh
+```
+
+This ensures future sessions benefit from today's learnings.
+
+Report: "Knowledge base synced with [N] new entries"
+
+---
+
 ## Manual Fallback
 
 If agent delegation is not working, fall back to manual checklist:

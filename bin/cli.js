@@ -8,7 +8,7 @@ import { update } from '../lib/updater.js';
 import { fix } from '../lib/fixer.js';
 import { validate } from '../lib/validator.js';
 
-const VERSION = '1.8.0';
+const VERSION = '1.9.0';
 
 // Initialize context if placeholders detected (idempotent)
 async function initContext(cwd) {
