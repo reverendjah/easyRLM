@@ -1,25 +1,25 @@
 # Service - E2E
 
-## Tipo Recomendado: auto (integration test)
+## Recommended Type: auto (integration test)
 
-Services sao testados via integration tests existentes.
+Services are tested via existing integration tests.
 
 ## Template
 
 ```markdown
 ## E2E Validation
 
-**Tipo:** auto
+**Type:** auto
 
-**Script/Ferramenta:** integration test existente
+**Script/Tool:** existing integration test
 
-**Cenario:**
-- Given: {pre-condicao}
+**Scenario:**
+- Given: {precondition}
 - When: service.execute({input})
-- Then: {resultado esperado}
+- Then: {expected result}
 
-**Comando:** `npm test -- --grep "{nome-do-teste}"`
+**Command:** `npm test -- --grep "{test-name}"`
 ```
 
-## Alternativa: hybrid
-SE depender de sistema externo nao mockavel.
+## Alternative: hybrid
+IF depends on external system that can't be mocked.

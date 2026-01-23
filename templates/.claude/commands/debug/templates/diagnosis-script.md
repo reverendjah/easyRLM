@@ -1,10 +1,10 @@
-# Template: Script de Diagnostico
+# Template: Diagnosis Script
 
-Para bugs Backend/API/Job/Integration, criar `scripts/debug-{descricao}.ts`.
+For Backend/API/Job/Integration bugs, create `scripts/debug-{description}.ts`.
 
 **Exit codes:**
-- 0: Bug NAO presente (comportamento correto)
-- 1: Bug PRESENTE (comportamento incorreto)
+- 0: Bug NOT present (correct behavior)
+- 1: Bug PRESENT (incorrect behavior)
 
 ---
 
@@ -13,60 +13,60 @@ Para bugs Backend/API/Job/Integration, criar `scripts/debug-{descricao}.ts`.
 ```typescript
 #!/usr/bin/env npx tsx
 /**
- * Diagnostico: {descricao do bug}
+ * Diagnosis: {bug description}
  * Bug: {$ARGUMENTS}
- * Data: {timestamp}
+ * Date: {timestamp}
  */
 import { config } from 'dotenv';
 config();
 
 async function diagnose(): Promise<boolean> {
   console.log('='.repeat(60));
-  console.log('DIAGNOSTICO: {nome}');
+  console.log('DIAGNOSIS: {name}');
   console.log('='.repeat(60));
   console.log('');
 
   // 1. Setup
   console.log('1. Setup...');
-  // [codigo de setup]
+  // [setup code]
 
-  // 2. Reproducao
+  // 2. Reproduction
   console.log('');
-  console.log('2. Reproduzindo cenario...');
-  // [codigo que reproduz o cenario do bug]
+  console.log('2. Reproducing scenario...');
+  // [code that reproduces the bug scenario]
 
-  // 3. Verificacao
+  // 3. Verification
   console.log('');
-  console.log('3. Verificando resultado...');
-  // [verificar se resultado esta correto]
+  console.log('3. Verifying result...');
+  // [verify if result is correct]
 
-  const resultado = /* valor obtido */;
-  const esperado = /* valor esperado */;
-  const bugPresente = resultado !== esperado;
+  const result = /* obtained value */;
+  const expected = /* expected value */;
+  const bugPresent = result !== expected;
 
-  // 4. Resultado
+  // 4. Result
   console.log('');
   console.log('='.repeat(60));
-  console.log('RESULTADO');
+  console.log('RESULT');
   console.log('='.repeat(60));
-  console.log('Esperado:', esperado);
-  console.log('Obtido:', resultado);
-  console.log('Bug presente:', bugPresente ? 'SIM' : 'NAO');
+  console.log('Expected:', expected);
+  console.log('Obtained:', result);
+  console.log('Bug present:', bugPresent ? 'YES' : 'NO');
 
-  return bugPresente;
+  return bugPresent;
 }
 
 diagnose()
-  .then(bugPresente => process.exit(bugPresente ? 1 : 0))
+  .then(bugPresent => process.exit(bugPresent ? 1 : 0))
   .catch(err => {
-    console.error('Erro fatal:', err);
+    console.error('Fatal error:', err);
     process.exit(1);
   });
 ```
 
 ---
 
-## Artefatos Alternativos
+## Alternative Artifacts
 
-**Para UI:** screenshot + snapshot do Playwright
-**Para Test:** output do npm test com stack trace
+**For UI:** screenshot + Playwright snapshot
+**For Test:** npm test output with stack trace

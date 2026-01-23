@@ -1,24 +1,24 @@
 # UI - E2E
 
-## Tipo Recomendado: auto (Playwright)
+## Recommended Type: auto (Playwright)
 
-Fluxos visuais testados via browser automation.
+Visual flows tested via browser automation.
 
 ## Template
 
 ```markdown
 ## E2E Validation
 
-**Tipo:** auto
+**Type:** auto
 
-**Script/Ferramenta:** Playwright + functional-validator
+**Script/Tool:** Playwright + functional-validator
 
-**Cenario:**
-- Given: Usuario na pagina {page}
-- When: Usuario preenche form e submete
-- Then: {resultado visual/funcional}
+**Scenario:**
+- Given: User on page {page}
+- When: User fills form and submits
+- Then: {visual/functional result}
 
-**Comando:** `npm run test:e2e -- {arquivo.spec.ts}`
+**Command:** `npm run test:e2e -- {file.spec.ts}`
 ```
 
 ## Playwright Pattern
@@ -38,24 +38,24 @@ test('should submit form successfully', async ({ page }) => {
 });
 ```
 
-## Alternativa: hybrid (fallback)
-SE Playwright falhar ou for overkill:
+## Alternative: hybrid (fallback)
+IF Playwright fails or is overkill:
 
 ```markdown
 ## E2E Validation
 
-**Tipo:** hybrid
+**Type:** hybrid
 
-**Acao do User:**
-- [ ] Navegue para {url}
-- [ ] Execute {acao}
-- [ ] Confirme visualmente o resultado
+**User Action:**
+- [ ] Navigate to {url}
+- [ ] Execute {action}
+- [ ] Visually confirm the result
 
-**Verificacoes do Claude:**
-- [ ] API call: `GET /api/{resource}` retorna dados esperados
-- [ ] Query DB: verificar dados persistidos
+**Claude Verifications:**
+- [ ] API call: `GET /api/{resource}` returns expected data
+- [ ] DB Query: verify persisted data
 
-**Criterio de Sucesso:**
-- [ ] User confirma que UI funcionou
-- [ ] Dados persistidos corretamente
+**Success Criteria:**
+- [ ] User confirms UI worked
+- [ ] Data persisted correctly
 ```

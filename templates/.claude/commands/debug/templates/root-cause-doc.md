@@ -1,46 +1,46 @@
-# Template: Documentacao de Causa Raiz
+# Template: Root Cause Documentation
 
-Criar arquivo `.claude/debug/root-cause.md`.
+Create file `.claude/debug/root-cause.md`.
 
 ---
 
 ## Template
 
 ```markdown
-# Causa Raiz: {descricao curta}
+# Root Cause: {short description}
 
-**Data:** {timestamp}
-**Bug:** {referencia a reproduction.md}
+**Date:** {timestamp}
+**Bug:** {reference to reproduction.md}
 
-## Classificacao do Fluxo
-- [ ] ORIGEM / [ ] TRANSFORMACAO / [ ] USO
+## Flow Classification
+- [ ] ORIGIN / [ ] TRANSFORMATION / [ ] USE
 
-## Hipoteses Testadas
-| # | Hipotese | Resultado | Evidencia |
-|---|----------|-----------|-----------|
-| 1 | [causa A] | Refutada | [por que] |
-| 2 | [causa B] | CONFIRMADA | arquivo:linha |
+## Hypotheses Tested
+| # | Hypothesis | Result | Evidence |
+|---|------------|--------|----------|
+| 1 | [cause A] | Refuted | [why] |
+| 2 | [cause B] | CONFIRMED | file:line |
 
-## Causa Raiz
-**Arquivo:** {path}
-**Linha:** {numero}
-**Codigo Atual:**
+## Root Cause
+**File:** {path}
+**Line:** {number}
+**Current Code:**
 \`\`\`typescript
-{codigo problematico}
+{problematic code}
 \`\`\`
 
-**Problema:** {explicacao clara}
+**Problem:** {clear explanation}
 
-## Fix Proposto
-**Tipo:** CORRECAO DE LOGICA / FILTRO / WORKAROUND
-**Codigo Novo:**
+## Proposed Fix
+**Type:** LOGIC CORRECTION / FILTER / WORKAROUND
+**New Code:**
 \`\`\`typescript
-{codigo corrigido}
+{corrected code}
 \`\`\`
 
-## Validacao
-- [x] Pode ser mudado no codigo
-- [x] Suportada por evidencia
-- [x] Explica todos os sintomas
-- [x] Resolve causa, nao esconde sintoma
+## Validation
+- [x] Can be changed in code
+- [x] Supported by evidence
+- [x] Explains all observed symptoms
+- [x] Resolves cause, doesn't hide symptom
 ```

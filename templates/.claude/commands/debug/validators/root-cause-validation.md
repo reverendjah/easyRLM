@@ -1,50 +1,50 @@
 # Validator: Root Cause Validation
 
-Validar causa raiz antes de propor fix.
+Validate root cause before proposing fix.
 
 ---
 
-## Checklist Obrigatoria
+## Required Checklist
 
-A causa raiz identificada DEVE passar em TODAS:
+The identified root cause MUST pass ALL:
 
-- [ ] Algo que voce pode MUDAR no codigo
-- [ ] Suportada por evidencia de codigo (arquivo:linha)
-- [ ] Explica TODOS os sintomas observados na reproducao
-- [ ] **O fix vai RESOLVER o problema, nao apenas ESCONDER?**
-- [ ] **Se um erro legitimo acontecer, ele ainda sera reportado?**
-
----
-
-## Teste do Devil's Advocate
-
-Antes de prosseguir, responder:
-
-1. **"Em que situacao meu fix pode dar ERRADO?"**
-   Resposta: [descreva cenario]
-
-2. **"Meu fix resolve a CAUSA ou apenas esconde o SINTOMA?"**
-   Resposta: [CAUSA / SINTOMA - se SINTOMA, volte ao Passo 2]
-
-3. **"Se eu adicionar a uma lista de ignore, por que nao posso corrigir a logica?"**
-   Resposta: [justifique ou admita que pode corrigir a logica]
-
-4. **"Meu fix sobrevive a um /deploy? E terraform apply? E VM restart?"**
-   Resposta: [SIM para todos / especificar qual falha]
+- [ ] Something you can CHANGE in code
+- [ ] Supported by code evidence (file:line)
+- [ ] Explains ALL symptoms observed in reproduction
+- [ ] **Will the fix RESOLVE the problem, not just HIDE it?**
+- [ ] **If a legitimate error occurs, will it still be reported?**
 
 ---
 
-## Categorizacao do Fix Proposto
+## Devil's Advocate Test
 
-Classifique seu fix:
-- [ ] **CORRECAO DE LOGICA**: Mudar comportamento incorreto → Preferivel
-- [ ] **FILTRO/IGNORE**: Adicionar a lista de coisas a ignorar → REQUER JUSTIFICATIVA
-- [ ] **WORKAROUND**: Contornar sem resolver → REQUER JUSTIFICATIVA
+Before proceeding, answer:
 
-**SE FILTRO ou WORKAROUND**: Documente por que CORRECAO DE LOGICA nao e possivel.
+1. **"In what situation could my fix go WRONG?"**
+   Answer: [describe scenario]
+
+2. **"Does my fix resolve the CAUSE or just hide the SYMPTOM?"**
+   Answer: [CAUSE / SYMPTOM - if SYMPTOM, go back to Step 2]
+
+3. **"If I add to an ignore list, why can't I fix the logic instead?"**
+   Answer: [justify or admit you can fix the logic]
+
+4. **"Does my fix survive a /deploy? And terraform apply? And VM restart?"**
+   Answer: [YES to all / specify which fails]
+
+---
+
+## Proposed Fix Categorization
+
+Classify your fix:
+- [ ] **LOGIC CORRECTION**: Change incorrect behavior → Preferred
+- [ ] **FILTER/IGNORE**: Add to ignore list → REQUIRES JUSTIFICATION
+- [ ] **WORKAROUND**: Work around without solving → REQUIRES JUSTIFICATION
+
+**IF FILTER or WORKAROUND**: Document why LOGIC CORRECTION is not possible.
 
 ---
 
 ## Decision Gate
 
-**SE** nao validar: voltar a investigacao com nova hipotese via Sequential Thinking.
+**IF** validation fails: return to investigation with new hypothesis via Sequential Thinking.

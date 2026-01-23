@@ -1,13 +1,13 @@
 # Validator: Criticality Gate
 
-Gate de criticidade - paths criticos requerem aprovacao.
+Criticality gate - critical paths require approval.
 
 ---
 
-## Lista de Paths Criticos
+## Critical Paths List
 
 ```
-PATHS_CRITICOS:
+CRITICAL_PATHS:
 - **/auth/**
 - **/payment/**
 - **/migration*/**
@@ -22,19 +22,19 @@ PATHS_CRITICOS:
 
 ## Decision Gate
 
-**SE** arquivos afetados ∩ PATHS_CRITICOS **nao vazio**:
+**IF** affected files ∩ CRITICAL_PATHS **not empty**:
 
-1. Documentar fix planejado:
-   - Causa raiz (com evidencia)
-   - Arquivos a modificar
-   - Mudancas propostas
-   - Riscos identificados
+1. Document planned fix:
+   - Root cause (with evidence)
+   - Files to modify
+   - Proposed changes
+   - Identified risks
 
-2. Chamar `EnterPlanMode`
-   - Escrever plano de fix em `.claude/plans/debug-fix-{timestamp}.md`
-   - User aprova ou rejeita via ExitPlanMode
+2. Call `EnterPlanMode`
+   - Write fix plan in `.claude/plans/debug-fix-{timestamp}.md`
+   - User approves or rejects via ExitPlanMode
 
-3. Apos aprovacao: Prosseguir para implementacao
+3. After approval: Proceed to implementation
 
-**SENAO** (nao critico):
-Prosseguir direto para implementacao (autonomia total)
+**ELSE** (not critical):
+Proceed directly to implementation (full autonomy)

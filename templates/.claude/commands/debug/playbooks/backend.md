@@ -1,19 +1,19 @@
 # Playbook: Backend/Service
 
-## Passos
+## Steps
 
-1. **Identificar** service/funcao via Grep (ja feito em exploracao basica)
+1. **Identify** service/function via Grep (already done in basic exploration)
 
-2. **Criar script** `scripts/debug-{descricao}.ts`:
+2. **Create script** `scripts/debug-{description}.ts`:
    ```typescript
    #!/usr/bin/env npx tsx
    import { config } from 'dotenv';
    config();
-   // Import do service
-   // Chamada com inputs do bug
-   // console.log do resultado
+   // Service import
+   // Call with bug inputs
+   // console.log the result
    ```
 
-3. **Executar**: `npx tsx scripts/debug-{descricao}.ts`
+3. **Execute**: `npx tsx scripts/debug-{description}.ts`
 
-4. **Evidencia**: Output mostrando comportamento incorreto
+4. **Evidence**: Output showing incorrect behavior

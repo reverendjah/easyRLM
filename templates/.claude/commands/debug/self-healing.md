@@ -1,99 +1,99 @@
 # Self-Healing Loop
 
-## Contexto
-Ativado quando quality gates falham OU bug ainda reproduz OU fix nao e permanente.
+## Context
+Triggered when quality gates fail OR bug still reproduces OR fix is not permanent.
 
 ---
 
-## Passo 1: Controle de Tentativas
+## Step 1: Attempt Control
 
 ```
-TENTATIVA_ATUAL: {1/2/3}
+CURRENT_ATTEMPT: {1/2/3}
 ```
 
-**SE** tentativa > 3:
-- PARAR imediatamente
-- Reportar ao usuario com analise completa
-- Documentar o que foi tentado e por que falhou
-- NAO continuar autonomamente
+**IF** attempt > 3:
+- STOP immediately
+- Report to user with full analysis
+- Document what was attempted and why it failed
+- DO NOT continue autonomously
 
 ---
 
-## Passo 2: Analise de Falha (Sequential Thinking)
+## Step 2: Failure Analysis (Sequential Thinking)
 
-Antes de tentar corrigir, ENTENDER por que falhou:
+Before trying to fix, UNDERSTAND why it failed:
 
 ```javascript
 mcp__sequential-thinking__sequentialthinking({
-  thought: "Analisando falha da verificacao...",
+  thought: "Analyzing verification failure...",
   nextThoughtNeeded: true,
   thoughtNumber: 1,
   totalThoughts: 5
 })
 ```
 
-Thoughts obrigatorios:
+Required thoughts:
 
-1. **"O que meu fix mudou exatamente?"**
-   - Listar arquivos e linhas modificados
+1. **"What exactly did my fix change?"**
+   - List modified files and lines
 
-2. **"O que a falha esta me dizendo?"**
-   - Se teste: qual assertion falhou?
-   - Se build: qual erro de compilacao?
-   - Se reproducao: qual sintoma persiste?
+2. **"What is the failure telling me?"**
+   - If test: which assertion failed?
+   - If build: which compilation error?
+   - If reproduction: which symptom persists?
 
-3. **"Minha causa raiz estava correta?"**
-   - Revisitar `.claude/debug/root-cause.md`
-   - A evidencia ainda se sustenta?
+3. **"Was my root cause correct?"**
+   - Revisit `.claude/debug/root-cause.md`
+   - Does the evidence still hold?
 
-4. **"O que eu perdi na analise?"**
-   - Ha outro caminho de codigo afetado?
-   - Ha efeito colateral nao considerado?
+4. **"What did I miss in the analysis?"**
+   - Is there another code path affected?
+   - Is there an unconsidered side effect?
 
-5. **"Qual a proxima acao?"**
-   - Determinar para onde voltar
-
----
-
-## Passo 3: Decision Gate
-
-Baseado na analise, escolher UMA opcao:
-
-| Situacao | Acao |
-|----------|------|
-| Fix incompleto (faltou parte) | Voltar para 03-fix, completar |
-| Causa raiz parcial (faltou profundidade) | Voltar para 02-investigate Passo 5 |
-| Causa raiz errada (hipotese refutada) | Voltar para 02-investigate Passo 4 |
-| Reproducao insuficiente | Voltar para 01-reproduce |
+5. **"What is the next action?"**
+   - Determine where to go back
 
 ---
 
-## Passo 4: Documentar Tentativa
+## Step 3: Decision Gate
 
-Adicionar em `.claude/debug/attempts.md`:
+Based on the analysis, choose ONE option:
+
+| Situation | Action |
+|-----------|--------|
+| Incomplete fix (missing part) | Go back to 03-fix, complete |
+| Partial root cause (lacked depth) | Go back to 02-investigate Step 5 |
+| Wrong root cause (hypothesis refuted) | Go back to 02-investigate Step 4 |
+| Insufficient reproduction | Go back to 01-reproduce |
+
+---
+
+## Step 4: Document Attempt
+
+Add to `.claude/debug/attempts.md`:
 
 ```markdown
-## Tentativa {N}
+## Attempt {N}
 
-**Data:** {timestamp}
-**Falha em:** Quality Gate / Reproducao / Permanencia
+**Date:** {timestamp}
+**Failed at:** Quality Gate / Reproduction / Permanence
 
-**O que foi tentado:**
-{descricao do fix}
+**What was attempted:**
+{fix description}
 
-**Por que falhou:**
-{analise via Sequential Thinking}
+**Why it failed:**
+{analysis via Sequential Thinking}
 
-**Proxima acao:**
-{para onde voltar e por que}
+**Next action:**
+{where to go back and why}
 ```
 
 ---
 
-## Passo 5: Incrementar e Continuar
+## Step 5: Increment and Continue
 
 ```
-TENTATIVA_ATUAL += 1
+CURRENT_ATTEMPT += 1
 ```
 
-Executar a acao definida no Decision Gate.
+Execute the action defined in the Decision Gate.

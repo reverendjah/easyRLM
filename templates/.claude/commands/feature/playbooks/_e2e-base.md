@@ -1,39 +1,39 @@
 # E2E Validation - Base
 
-## Tipos
+## Types
 
-| Tipo | Quando | Fluxo |
-|------|--------|-------|
-| auto | UI, scripts prontos | Comando direto |
+| Type | When | Flow |
+|------|------|------|
+| auto | UI, ready scripts | Direct command |
 | semi-auto | APIs, webhooks | Claude trigger + poll + verify |
-| hybrid | Integracao externa | User acao + Claude verifica |
+| hybrid | External integration | User action + Claude verifies |
 
 ---
 
-## Verificacoes que Claude Pode Fazer
+## Verifications Claude Can Perform
 
-| Tipo | Como |
-|------|------|
-| Database | Query conforme sintaxe do projeto |
+| Type | How |
+|------|-----|
+| Database | Query per project syntax |
 | API | `GET /api/resource` expect 200 |
 | Logs | `grep "pattern" /logs/file` |
 | File | `ls /path/to/file` |
 
 ---
 
-## Criterios de Falha
+## Failure Criteria
 
-E2E FALHOU se:
+E2E FAILED if:
 1. Timeout (auto/semi-auto: 60s, hybrid: 5min)
-2. Criterio de sucesso nao atingido
-3. Erro inesperado
-4. User: "Nao consigo" (hybrid)
+2. Success criteria not met
+3. Unexpected error
+4. User: "I can't" (hybrid)
 
 ---
 
 ## Recovery
 
-SE E2E falhou:
-1. Perguntar ao user se quer debugar
-2. SE sim: `/debug` workflow
-3. SE nao: continuar (marcar FAILED)
+IF E2E failed:
+1. Ask user if they want to debug
+2. IF yes: `/debug` workflow
+3. IF no: continue (mark FAILED)

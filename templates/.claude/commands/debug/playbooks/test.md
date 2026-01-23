@@ -1,14 +1,14 @@
 # Playbook: Test
 
-## Passos
+## Steps
 
-1. **Rodar teste isolado**:
+1. **Run isolated test**:
    ```bash
-   npm test -- --testPathPattern="{arquivo}"
+   npm test -- --testPathPattern="{file}"
    ```
 
-2. **Identificar** assertion que falha no output
+2. **Identify** failing assertion in output
 
-3. **SE** necessario: adicionar console.logs temporarios
+3. **IF** necessary: add temporary console.logs
 
-4. **Evidencia**: Stack trace com linha da assertion
+4. **Evidence**: Stack trace with assertion line
